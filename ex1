@@ -1,0 +1,41 @@
+.data
+A : .word 1,4,7,8,9,10
+Aend : .word
+str1 : .asciiz "largest product is "
+.text
+la $t1, Aend #A[n]->next
+addi $t1, $t1, -4 #t1=A[n]
+la $v1, A #A[0]
+li $a1, 0 #A[i]
+li $a2, 0 #A[i+1]
+li $s0, 0 # tich lon nhat 
+li $s1, 0#tich tam thoi
+main:
+addi $a1, $v1, 0# gán a1=v1=*A[i]
+loop:
+addi $a2, $a1, 4#a2= *A[i+1]
+lw $t2, 0($a1)#t2= A[i]
+lw $t3, 0($a2)#t3=A[i+1]
+mul $s1, $t3, $t2# A[i]*A[i+1]
+blt $s1, $s0, check# so sánh vs tích lớn nhất 
+addi $s0, $s1, 0#gán
+j check
+check:
+addi $a1, $a1, 4# A[i]=A[i+1]
+beq $a1, $t1, exit#ss
+j loop
+exit:#in ra kết quả
+li $v0, 4
+la $a0, str1
+syscall
+li $v0,1
+la $a0, ($s0)
+syscall
+
+
+
+
+
+
+
+
