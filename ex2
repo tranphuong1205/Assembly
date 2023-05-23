@@ -1,0 +1,67 @@
+.data
+a : .asciiz " is lucky number" 
+an :.asciiz " is'n lucky number"
+.text
+li $v1, 5675
+addi $sp, $fp, 0 
+li $t0, 0
+li  $a2, 0
+li $a3,0
+addi $a1, $v1,0
+count:
+div $a1, $a1, 10
+mfhi $s1
+addi $sp, $sp, -4
+sw $s1, 0($sp)
+addi $t0, $t0, 1
+beq $a1, 0, lucky_number
+j count
+lucky_number:
+div $t1, $t0, 2
+addi $t2, $t1, 0
+loop1:
+lw $s2, 0($sp)#load tu stack vao de tinh tong n/2 so sau
+add $a2, $a2, $s2
+addi $sp, $sp, 4
+addi, $t2, $t2, -1
+beq $t2, 0, loop2
+j loop1
+loop2: #tinh tong n/2 so truoc
+lw $s2,0($sp)
+add $a3, $a3, $s2
+addi $sp, $sp, 4
+beq $sp, $fp, compare
+j loop2
+compare:
+beq $a3, $a2, is_lucky_number
+j is_unlucky_number
+is_lucky_number:
+li $v0,1
+la $a0, ($v1)
+syscall
+li $v0, 4
+la $a0, a
+syscall
+j exit
+is_unlucky_number:
+li $v0,1
+la $a0, ($v1)
+syscall
+li $v0, 4
+la $a0, an
+syscall
+exit:
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
